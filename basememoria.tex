@@ -97,6 +97,24 @@
 
 El funcionamiento básico de Nagios consiste en una arquitectura cliente-servidor mediante ejecución de polling periódico de chequeos de recursos (con agente) y servicios (sin agente) sobre sistemas cliente. Cuando se detecta un error la plataforma es capaz de enviar una notificación (sobre diferentes modos de comunicación) a los contactos administrativos, informando del estado del servicio que ha provocado el error, incluyendo informes de estado, de logs e históricos web).
 
+Agentes Nagios
+
+Una gran parte del monitoreo se puede hacer remotamente. Todo servicio publicado en la red, se puede monitorear sin necesidad de instalar nada en el host monitoreado. Sin embargo hay recursos que no se pueden monitorear remotamente, como por ejemplo:
+- espacio libre en disco
+- memoria en uso
+- carga de CPU
+- servicios activos
+- cantidad de usuarios logueados
+Para ello es necesario instalar agentes. Estos agentes, mediante plugins, chequean el estado de los recursos y envían los datos al servidor Nagios. El tipo de conexión es pull, es decir, el servidor Nagios contacta cada cierto intervalo de tiempo a los agentes, les indica qué comandos ejecutar y obtiene los resultados.
+Existen varios protocolos utilizados para la comunicación entre agentes y Nagios:
+- NRPE - Nagios Remote plugin Executor. Es el protocolo más utilizado y recomendado por Nagios. Se accede mediante el plugin check_nrpe.
+- NSCA - Nagios Service Check Acceptor.
+- NSCP: protocolo nativo de NSClient++
+- NRDP: reemplazo NSCA.
+- Syslog: protocolo estándar para transmisión de logs en Unix.
+- SNMP: Simple Network Management Protocol. Protocolo estándar para administración y monitoreo de dispositivos de red.
+
+
 %%Se pueden incluir figuras como por ejemplo la Figura~\ref{figura1} de la página \pageref{figura1}
 
 %%\begin{figure}
@@ -104,6 +122,17 @@ El funcionamiento básico de Nagios consiste en una arquitectura cliente-servido
 %%\caption{Figura de ejemplo}
 %%\label{figura1}
 %%\end{figure}
+
+Nagios sigue grosso modo la siguiente estructura:
+
+Un núcleo de la aplicación que forma la lógica de control de negocio de la aplicación contiene el software necesario para realizar la monitorización de los servicios y máquinas de la red para la que está preparado. Hace uso de diversos componentes que vienen con la aplicación, y puede hacer uso de otros componentes realizados por terceras personas.
+Aunque permite la captura de paquetes SNMP Trap para notificar sucesos, no es un sistema de monitorización y gestión basado en SNMP sino que realiza su labor basándose en una gran cantidad de pequeños módulos software que realizan chequeos de parte de la red.
+
+Muestra los resultados de la monitorización y del uso de los diversos componentes en una interfaz web a través de un conjunto de CGI’s y de un conjunto de páginas HTML que vienen incorporadas de serie. Y que permiten al administrador una completa visión de qué ocurre, dónde y en algunos casos, por qué.
+Por último, si se compila para ello, Nagios guardará los históricos en una base de datos para que al detener y reanudar el servicio de monitorización, todos los datos sigan como iban, sin cambios.
+
+
+Así que en las siguientes páginas, antes de profundizar en el uso de Nagios, vamos a explicar cómo se realiza correctamente la instalación de este sistema, que no es nada trivial; al menos no es algo rápido.
 
 \section{Instalación de Nagios}
 
