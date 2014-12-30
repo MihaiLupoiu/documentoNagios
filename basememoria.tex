@@ -5,6 +5,7 @@
 \usepackage{color}
 \usepackage{pdfpages}
 \usepackage{url}
+\usepackage{float}
 
 \title{Práctica Nagios}
 \author{Pablo Jiménez Mateo y Mihaita Alexandru Lupoiu}
@@ -407,20 +408,39 @@ service httpd restart
 service nagios restart
 \end{verbatim}
 
+\newpage
 \section{Acceso a Nagios mediante el navegador}
 
-Para acceder a la interfaz web de Nagios una vez seguidos los pasos anteriores, no hay más que ir a \url{http://localhost/nagios/}.
+Para acceder a la interfaz web de Nagios una vez seguidos los pasos anteriores, no hay más que ir a \url{http://localhost/nagios/}. Nos pedirá usuario y contraseña, si has estado atento a la memoria sabrás cuáles son.\\
 
 La página principal es la siguiente
 
-\begin{figure}[h!]
+\begin{figure}[H]
   \centering
 \includegraphics[width=10cm]{images/0.png} 
   \caption{Página principal.}
 \end{figure}
 
+En la columna izquierda se puede pinchar en el enlace Hosts para poder ver el estado de los hosts que monitorizamos.\\
+
+\begin{figure}[H]
+  \centering
+\includegraphics[width=10cm]{images/2.png} 
+  \caption{Página de servicios.}
+\end{figure}
+
+\newpage
+Si pinchamos en la opción de Services de la columna izquierda podremos ver los servicios que han sido configurados para cada host y sus estados
+
+\begin{figure}[H]
+  \centering
+\includegraphics[width=10cm]{images/8.png} 
+  \caption{Página de hosts.}
+\end{figure}
+
 Se debe explicar cómo se debe configurar el servidor web para acceder a Nagios a través del navegador
-y  también la interfaz web que presenta Nagios.
+y  también la interfaz web que presenta Nagios.\\
+
 
 \section{Experiencia de instalación y configuración de Nagios}
 
