@@ -31,15 +31,15 @@
 
     Nagios\cite{web} fue originalmente diseñado para ser ejecutado en GNU/Linux, pero también se ejecuta bien en variantes de Unix. Está licenciado bajo la GNU General Public License Version 2 publicada por la Free Software Fundation.
     
-\subsection{Descripción}
+\subsection{Características}
 \begin{itemize}
 
 \item Monitorización de Servicios de Red
 \item Monitorización de los recursos de equipos hardware (carga del procesador, uso de los discos, logs del sistema) en varios sistemas operativos, incluso Microsoft Windows con los plugins $NRPE_NT$ o $NSClient++$.
 \item Monitorización remota, a través de túneles SSL cifrados o SSH.
-\item Monitoreo de Host y sus recursos como CPU, Memoria, Discos, etc
-\item Diseño simple de plugins, que permiten a los usuarios desarrollar sus propios chequeos de servicios dependiendo de sus necesidades, usando sus herramientas preferidas (Bash, C++, Perl, Ruby, Python, PHP, C\#...).
-\item Chequeo de servicios paralizados.
+\item Monitorización de Host y sus recursos como CPU, Memoria, Discos, etc
+\item Diseño simple de plugins, que permiten a los usuarios desarrollar sus propias comprobaciones de servicios dependiendo de sus necesidades, usando sus herramientas preferidas (Bash, C++, Perl, Ruby, Python, PHP, C\#...).
+\item Comprobación de servicios paralizados.
 \item Posibilidad de definir la jerarquía de la red, permitiendo distinguir entre host caídos y host inaccesibles.
 \item Capacidad de Definir Host/Servicios padres o hijos, lo que permite detectar el origen del problema en caso de no ser de la propia máquina 
 \item Notificaciones a los contactos cuando ocurren problemas en servicios o hosts, así como cuando son resueltos (a través del correo electrónico, buscapersonas, Jabber, SMS, o cualquier método definido por el usuario junto con su correspondiente complemento).
@@ -55,13 +55,13 @@
 \subsection{Beneficios de utilizar Nagios}
 
 \begin{itemize}
-\item Supervisión Continua de la plataforma de TI
+\item Supervisión contínua de la plataforma de TI
 \item Esto te permite mejorar los tiempos de disponibilidad de los servicios
 \item Alertar al equipo de TI ante alertas preventivas (Warning) o críticas (Critical)
 \item Reaccionar de manera preventiva y no reactiva ante los eventos que nagios detecte.
 \item Aumenta la productividad de las TIC
-\item Generar Reportes de los eventos.
-\item Planificar mantención de tu hardware o servicios.
+\item Generar reportes de los eventos.
+\item Planificar mantenimiento de tu hardware o servicios.
 \item Planificar el cambio o renovación de la Infraestructura de TIC
 \end{itemize}    
 
@@ -81,7 +81,7 @@
 \end{figure}
 
 
-\item Zenoss (Zenoss Core)\cite{web-Zenoss} es una aplicación de informática de código abierto, plataforma para la gestión de red y servidores basada en el servidor de aplicaciones Zope. Zenoss Core provee una interfaz web que permite a los administradores de sistemas monitorear disponibilidad, inventario/configuración, desempeño y eventos.
+\item Zenoss (Zenoss Core)\cite{web-Zenoss} es una aplicación de informática de código abierto, plataforma para la gestión de red y servidores basada en el servidor de aplicaciones Zope. Zenoss Core provee una interfaz web que permite a los administradores de sistemas monitorizar disponibilidad, inventario/configuración, desempeño y eventos.
 
 \begin{figure}[hbtp]
 \centerline{\includegraphics[width=10cm]{images/Zenossscreen.jpg}}
@@ -96,11 +96,10 @@
 
 %%Explicación de cómo funciona Nagios
 
-El funcionamiento básico de Nagios consiste en una arquitectura cliente-servidor mediante ejecución de polling periódico de chequeos de recursos (con agente) y servicios (sin agente) sobre sistemas cliente. Cuando se detecta un error la plataforma es capaz de enviar una notificación (sobre diferentes modos de comunicación) a los contactos administrativos, informando del estado del servicio que ha provocado el error, incluyendo informes de estado, de logs e históricos web).
+El funcionamiento básico de Nagios consiste en una arquitectura cliente-servidor mediante ejecución de polling periódico de comprobaciones de recursos (con agente) y servicios (sin agente) sobre sistemas cliente. Cuando se detecta un error la plataforma es capaz de enviar una notificación (sobre diferentes modos de comunicación) a los contactos administrativos, informando del estado del servicio que ha provocado el error, incluyendo informes de estado, de logs e históricos web).\\
 
-Agentes Nagios
 
-Una gran parte del monitoreo se puede hacer remotamente. Todo servicio publicado en la red, se puede monitorear sin necesidad de instalar nada en el host monitoreado. Sin embargo hay recursos que no se pueden monitorear remotamente, como por ejemplo:
+Una gran parte de la monitorización se puede hacer remotamente. Todo servicio publicado en la red, se puede monitorizar sin necesidad de instalar nada en el host monitorizar. Sin embargo hay recursos que no se pueden monitorizar remotamente, como por ejemplo:
 \begin{itemize}
 
 \item  Espacio libre en disco
@@ -111,7 +110,8 @@ Una gran parte del monitoreo se puede hacer remotamente. Todo servicio publicado
 
 \end{itemize}
 
-Para ello es necesario instalar agentes. Estos agentes, mediante plugins, chequean el estado de los recursos y envían los datos al servidor Nagios. El tipo de conexión es pull, es decir, el servidor Nagios contacta cada cierto intervalo de tiempo a los agentes, les indica qué comandos ejecutar y obtiene los resultados.
+Para ello es necesario instalar agentes. Estos agentes, mediante plugins, comprueban el estado de los recursos y envían los datos al servidor Nagios. El tipo de conexión es pull, es decir, el servidor Nagios contacta cada cierto intervalo de tiempo a los agentes, les indica qué comandos ejecutar y obtiene los resultados.\\
+
 Existen varios protocolos utilizados para la comunicación entre agentes y Nagios:
 \begin{itemize}
 \item  NRPE Nagios Remote plugin Executor. Es el protocolo más utilizado y recomendado por Nagios. Se accede mediante el plugin check\_nrpe.
@@ -119,12 +119,11 @@ Existen varios protocolos utilizados para la comunicación entre agentes y Nagio
 \item  NSCP: protocolo nativo de NSClient++
 \item  NRDP: reemplazo NSCA.
 \item  Syslog: protocolo estándar para transmisión de logs en Unix.
-\item  SNMP: Simple Network Management Protocol. Protocolo estándar para administración y monitoreo de dispositivos de red.
-
+\item  SNMP: Simple Network Management Protocol. Protocolo estándar para administración y monitorización de dispositivos de red.
 
 \end{itemize}
 
-Nagios tiene a groso modo un núcleo de la aplicación que forma la lógica de control de negocio. De la aplicación contiene el software necesario para realizar la monitorización de los servicios y máquinas de la red para la que está preparado. Hace uso de diversos componentes que vienen con la aplicación, y puede hacer uso de otros componentes realizados por terceras personas.
+Nagios tiene un núcleo de la aplicación que forma la lógica de control de negocio. De la aplicación contiene el software necesario para realizar la monitorización de los servicios y máquinas de la red para la que está preparado. Hace uso de diversos componentes que vienen con la aplicación, y puede hacer uso de otros componentes realizados por terceras personas.
 
 \begin{figure}[hbtp]
 \centerline{\includegraphics[width=12cm]{images/nagiosCore.png}}
@@ -132,7 +131,7 @@ Nagios tiene a groso modo un núcleo de la aplicación que forma la lógica de c
 \label{figuraEstructuraNagios}
 \end{figure}
 
-Aunque permite la captura de paquetes SNMP Trap para notificar sucesos, no es un sistema de monitorización y gestión basado en SNMP sino que realiza su labor basándose en una gran cantidad de pequeños módulos software que realizan chequeos de parte de la red.
+Aunque permite la captura de paquetes SNMP Trap para notificar sucesos, no es un sistema de monitorización y gestión basado en SNMP sino que realiza su labor basándose en una gran cantidad de pequeños módulos software que realizan comprobaciones de parte de la red.
 
 Muestra los resultados de la monitorización y del uso de los diversos componentes en una interfaz web a través de un conjunto de CGI’s y de un conjunto de páginas HTML que vienen incorporadas de serie. Y que permiten al administrador una completa visión de qué ocurre, dónde y en algunos casos, por qué.
 Por último, si se compila para ello, Nagios guardará los históricos en una base de datos para que al detener y reanudar el servicio de monitorización, todos los datos sigan como iban, sin cambios.
@@ -420,8 +419,6 @@ La página principal es la siguiente
   \caption{Página principal.}
 \end{figure}
 
-<<<<<<< HEAD
-=======
 En la columna izquierda se puede pinchar en el enlace Hosts para poder ver el estado de los hosts que monitorizamos.\\
 
 \begin{figure}[H]
@@ -449,12 +446,9 @@ También se puede ver un mapa de la topología de la red si pinchamos en Map
 
 Se puede jugar con la interfaz para ver cómo funciona con mayor profundidad.
 
+\section{Conclusión}
 
->>>>>>> b689e5de626fe3dccb339eafe09f44edf8b0c010
-\section{Experiencia de instalación y configuración de Nagios}
-
-Se deben detallar los pasos que se han seguido para la instalación y configuración de Nagios
-tanto para monitorizar el sistema local como sistemas remotos.
+Nagios es un sistema muy potente pero que requiere bastante tiempo o conocimientos para su correcta configuración. Es una herramienta para usuarios avanzados con conocimientos de sistemas Linux.
 
 \begin{thebibliography}{1}
 
