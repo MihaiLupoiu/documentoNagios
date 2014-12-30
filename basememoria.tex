@@ -202,10 +202,67 @@ make install
 
 Con esto tendríamos instalado Nagios y sus plugins desde código fuente, ahora sólo queda configurarlos. Esto se explica más adelante.
 
-\section{Configurar Nagios}
+\section{Configuración}
 
-Se debe explicar los distintos ficheros de configuración de Nagios y cómo se configuran para 
-monitorizar tanto al sistema local como a sistemas remotos.
+\subsection{Configuración de Nagios}
+En esta sección se explica cómo configurar Nagios paso a paso.
+
+En primer lugar debemos crear los usuarios. En esta memoria crearemos un usuario administrador y otro que sólo pueda consultar la interfaz web.
+
+\begin{verbatim}
+htpasswd -c /usr/local/nagios/etc/htpasswd.users administrador
+htpasswd /usr/local/nagios/etc/htpasswd.users usuario
+\end{verbatim}
+
+En ambos casos se pedirá que se introduzca una contraseña, en nuestro ejemplo serán \textbf{labora2000} y \textbf{practicas} respectivamente. El parámetro -c usado en el primer comando crea el fichero si no existe, de existir lo sobreescribe.
+
+El siguiente paso es cambiar el e-mail de contacto. Este e-mail será el que recibirá todas las notificaciones de Nagios. Para ello editamos el fichero /usr/local/nagios/etc/objects/contacts.cfg y cambiamos la siguiente línea para que contenga nuestro e-mail
+
+\begin{verbatim}
+ email    usuario@gmail.com; <<***** CHANGE THIS TO YOUR EMAIL ADDRESS ******
+\end{verbatim}
+
+Ahora debemos decirle a Apache que carge el módulo PHP o la web no funcionará correctamente. Para ello modificamos el fichero /etc/httpd/conf/httpd.conf y añadimos la línea
+
+\begin{verbatim}
+LoadModule php5_module modules/libphp5.so
+\end{verbatim}
+
+con esto nos aseguramos de que funcione PHP en nuestro servidor web.
+
+Por último configuramos los usuarios de Nagios. Para ello hay que editar el fichero /usr/local/nagios/etc/cgi.cfg
+
+Hay que editar las líneas siguientes para incluir los usuarios que hemos creado
+
+\begin{verbatim}
+authorized_for_system_information=administrador,usuario
+authorized_for_configuration_information=administrador
+authorized_for_system_commands=administrador
+authorized_for_all_services=administrador,usuario
+authorized_for_all_hosts=administrador,usuario
+authorized_for_all_service_commands=administrador
+authorized_for_all_host_commands=administrador
+\end{verbatim}
+
+Las líneas hacen lo siguiente:
+
+\begin{itemize}
+\item \textbf{authorized\_for\_system\_information}: Estos usuarios podrán ver los procesos e información de los sistemas en la interfaz web.
+\item \textbf{authorized\_for\_configuration\_information}: Estos usuarios podrán ver los comandos y la configuración de los sistemas a través de la interfaz web.
+\item \textbf{authorized\_for\_system\_commands}: Estos usuarios podrán apagar y reiniciar Nagios.
+\item \textbf{authorized\_for\_all\_services}: Estos usuarios podrán ver la información de todos los servicios monitorizados.
+\item \textbf{authorized\_for\_all\_hosts}: Estos ususarios podrán ver la información de todos los sistemas monitorizados.
+\item \textbf{authorized\_for\_all\_service\_commands}: Estos usuarios podrán ejecutar comandos sobre todos los servicios.
+\item \textbf{authorized\_for\_all\_host\_commands}: Estos usuarios podrán ejecutar comandos sobre todos los sistemas.
+\end{itemize}
+
+De esta manera sólo le damos poderes totales al usuario \textbf{administrador} y poderes de consulta al usuario \textbf{usuario}.
+
+Con esto hemos acabado la configuración de Nagios, pero no es muy útil si no añadimos algunos hosts externos para monitorizar.
+
+\subsection{Configuración de los hosts externos}
+
+
 
 \section{Acceso a Nagios mediante el navegador}
 
