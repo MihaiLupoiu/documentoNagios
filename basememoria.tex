@@ -151,7 +151,8 @@ Ahora ya estamos listos para descargar el código fuente. En el momento de escri
 En primer lugar, descargamos y descomprimimos las fuentes de Nagios Core. Nagios Core es el engine que tiene toda la lógica de la aplicación, sobre él se añadirán plugins y demás para personalizarlo.
 
 \begin{verbatim}
-wget http://netcologne.dl.sourceforge.net/project/nagios/nagios-4.x/nagios-4.0.8/nagios-4.0.8.tar.gz
+wget http://netcologne.dl.sourceforge.net/project/nagios/
+            nagios-4.x/nagios-4.0.8/nagios-4.0.8.tar.gz
 tar -xzf nagios-4.0.8.tar.gz
 \end{verbatim}
 
@@ -219,7 +220,7 @@ En ambos casos se pedirá que se introduzca una contraseña, en nuestro ejemplo 
 El siguiente paso es cambiar el e-mail de contacto. Este e-mail será el que recibirá todas las notificaciones de Nagios. Para ello editamos el fichero /usr/local/nagios/etc/objects/contacts.cfg y cambiamos la siguiente línea para que contenga nuestro e-mail
 
 \begin{verbatim}
- email    usuario@gmail.com; <<***** CHANGE THIS TO YOUR EMAIL ADDRESS ******
+email  usuario@gmail.com; <<***** CHANGE THIS TO YOUR EMAIL ADDRESS ******
 \end{verbatim}
 
 Ahora debemos decirle a Apache que carge el módulo PHP o la web no funcionará correctamente. Para ello modificamos el fichero /etc/httpd/conf/httpd.conf y añadimos la línea
@@ -262,7 +263,101 @@ Con esto hemos acabado la configuración de Nagios, pero no es muy útil si no a
 
 \subsection{Configuración de los hosts externos}
 
+Para comenzar la configuración, crearemos el fichero /usr/local/nagios/etc/objects/hosts.cfg que contendrá todos los parámetros, hosts y servicios a configurar.
 
+La plantilla básica que vamos a usar para configurar cada uno de los hosts es la siguiente
+
+\begin{verbatim}
+define host {
+
+    host_name                PC_108
+    alias                    108 lab
+    address                  150.128.49.108
+    check_command            check-host-alive
+    max_check_attempts       3
+    check_period             24x7
+    notification_intervaL    180
+    notification_period      24x7
+    notification_optionS     d,r,u
+
+}
+\end{verbatim}
+
+\begin{itemize}
+\item \textbf{host\_name}: Un nombre corto y único para identificar el ordenador.
+\item \textbf{alias}: Un nombre largo o descripción para identificar el ordenador.
+\item \textbf{address}: La dirección IP
+\item \textbf{check\_command}: Comando que se ejecutará para saber si el host está disponible o no.
+\item \textbf{max\_check\_attempts}: El número de intentos que realizará Nagios para comprobar si un host no está disponible después de que este no le responda.
+\item \textbf{check\_period}: Indica el intervalo sobre el cual se puede hacer checks sobre el servidor.
+\item \textbf{notification\_interval}: El intervalo que tardará Nagios en decirnos que el host todavía no está disponible.
+\item \textbf{notification\_period}: Indica el intervalo sobre el cual se pueden enviar notificaciones a los usuarios.
+\item \textbf{notification\_options}: Indica cuándo enviar notificaciones. \textbf{d}: Indicar cuando el host no está disponible. \textbf{u}: Indicar cuándo el host no es accesible. \textbf{r}: Indicar cuándo se ha recuperado el servidor.
+\end{itemize}
+
+Tendremos un bloque como el anterior \textbf{para cada uno} de los hosts que pretendemos monitorizar.
+
+El siguiente paso es el de configurar grupos, de manera que se pueda asignar la monitorización de un servicio al grupo entero en lugar de ir host por host. La plantilla es la siguiente
+
+\begin{verbatim}
+define hostgroup {
+
+    hostgroup_name    grupolab1
+    alias             Grupo laboratorio
+    members           PC_108, PC_107, PC_105
+
+}
+\end{verbatim}
+
+\begin{itemize}
+\item \textbf{hostgroup\_name}: Nombre por el que se identifica el grupo.
+\item \textbf{alias}: Pequeña descripción del grupo.
+\item \textbf{members}: Hosts por nombre que pertenecen al grupo.
+\end{itemize}
+
+Y por último la plantilla usada para definir los servicios que queremos monitorizar es la siguiente
+\begin{verbatim}
+define service{
+
+    hostgroup_name          grupolab1
+    service_description     SSH
+    check_period            24x7
+    max_check_attempts      4
+    contact_groups          admins
+    notification_options    w,u,c,r
+    notification_interval   960
+    notification_period     24x7
+    check_command           check_ssh
+    
+}
+\end{verbatim}
+
+\begin{itemize}
+\item \textbf{hostgroup\_name}: El grupo o grupos a los que se le aplicará este servicio.
+\item \textbf{service\_description}: Una pequeña descripción del servicio.
+\item \textbf{check\_period}: Indica el intervalo sobre el cual se puede hacer checks sobre el servicio.
+\item \textbf{max\_check\_attempts}: El número de intentos que realizará Nagios para comprobar si un servicio no está disponible después de que este no le responda.
+\item \textbf{contact\_groups}: A qué grupo hay que enviarle las notificaciones.
+\item \textbf{notification\_options}: Indica bajo qué condiciones se envían notificaciones. \textbf{w}: Cuando está en WARNING. \textbf{u}: Cuando está en UNKNOWN. \textbf{c}: Cuando está en CRITICAL. \textbf{r}: Cuando se ha recuperado.
+\item \textbf{notification\_interval}: El intervalo que tardará Nagios en decirnos que el servicio todavía no está disponible.
+\item \textbf{notification\_period}: Indica el intervalo sobre el cual se pueden enviar notificaciones a los usuarios.
+\item \textbf{check\_command}: El comando que se ejecutará en este servicio.
+\end{itemize}
+
+El ejemplo anterior monitoriza el estado del servicio SSH en el grupo grupolab1.
+
+Ahora queda decirle a Nagios que lea el fichero que acabamos de crear, para ello hay que editar el fichero /usr/local/nagios/etc/nagios.cfg y hay que añadir la línea
+
+\begin{verbatim}
+cfg_file=/usr/local/nagios/etc/objects/hosts.cfg
+\end{verbatim}
+
+Ahora sólo queda reiniciar los servicios y todo estará funcionando.
+
+\begin{verbatim}
+service httpd restart
+service nagios restart
+\end{verbatim}
 
 \section{Acceso a Nagios mediante el navegador}
 
