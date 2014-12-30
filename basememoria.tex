@@ -21,7 +21,7 @@
     Nagios es un sistema de monitorización de redes ampliamente utilizado, de código abierto, que vigila los equipos (hardware) y servicios (software) que se especifiquen, alertando cuando el comportamiento de los mismos no sea el deseado. Entre sus características principales figuran la monitorización de servicios de red (SMTP, POP3, HTTP, SNMP...), la monitorización de los recursos de sistemas hardware (carga del procesador, uso de los discos, memoria, estado de los puertos...), independencia de sistemas operativos, posibilidad de monitorización remota mediante túneles SSL cifrados o SSH, y la posibilidad de programar plugins específicos para nuevos sistemas\cite{nagios-wikipedia}.
     
 \begin{figure}[hbtp]
-\centerline{\includegraphics[width=11cm]{nagios3-1.png}}
+\centerline{\includegraphics[width=11cm]{images/nagios3-1.png}}
 \caption{Interfaz de Nagios}
 \label{figura-Nagios}
 \end{figure}    
@@ -74,7 +74,7 @@
 \item Pandora FMS\cite{web-PandoraFMS} es un software de código abierto que sirve para monitorizar y medir todo tipo de elementos. Monitoriza sistemas, aplicaciones o dispositivos. Permite saber el estado de cada elemento de un sistema a lo largo del tiempo. Pandora FMS está orientado a grandes entornos, y permite gestionar con y sin agentes, varios miles de sistemas, por lo que se puede emplear en grandes clusters, centros de datos y redes de todo tipo.
 
 \begin{figure}[hbtp]
-\centerline{\includegraphics[width=10 cm]{pandoraFMS.png}}
+\centerline{\includegraphics[width=10 cm]{images/pandoraFMS.png}}
 \caption{Interfaz Pandora FMS}
 \label{PandoraFMS}
 \end{figure}
@@ -83,7 +83,7 @@
 \item Zenoss (Zenoss Core)\cite{web-Zenoss} es una aplicación de informática de código abierto, plataforma para la gestión de red y servidores basada en el servidor de aplicaciones Zope. Zenoss Core provee una interfaz web que permite a los administradores de sistemas monitorear disponibilidad, inventario/configuración, desempeño y eventos.
 
 \begin{figure}[hbtp]
-\centerline{\includegraphics[width=10cm]{Zenossscreen.jpg}}
+\centerline{\includegraphics[width=10cm]{images/Zenossscreen.jpg}}
 \caption{Interfaz Zenoss}
 \label{Zenoss}
 \end{figure}
@@ -174,10 +174,13 @@ yum -y groupinstall "Development Tools"
 \end{verbatim}
 
 \textbf{httpd} y \textbf{php} serán los encargados del servidor web. \textbf{glibc}, \textbf{glibc-common}, \textbf{gd} y \textbf{gd-devel} son librerías para el manejo de gráficos y \textbf{net-snmp} es el que incluye las librerías para manejar el protocolo SNMP, que nos permitirá monitorizar los ordenadores en red.
+\\
 
 \textbf{Development Tools} instala todos los paquetes necesarios para poder compilar los códigos fuente. Incluye, como pequeño ejemplo, gcc y make.
+\\
 
 Ahora ya estamos listos para descargar el código fuente. En el momento de escribir esta memoria la última versión disponible es la 4.0.8 y es la que se usará a lo largo de la memoria, pero los pasos deberían ser iguales o muy similares en las versiones posteriores.
+\\
 
 En primer lugar, descargamos y descomprimimos las fuentes de Nagios Core. Nagios Core es el engine que tiene toda la lógica de la aplicación, sobre él se añadirán plugins y demás para personalizarlo.
 
@@ -195,6 +198,7 @@ cd nagios-4.0.8
 \end{verbatim}
 
 \textbf{./configure} comprueba que las dependencias del programa estén satisfechas (por lo menos las esenciales). En caso de no cumplirse algún requisito indispensable el programa saldrá con un mensaje de error indicando qué se debe instalar. Si el programa considera que se cumplen los requisitos mínimos generará un fichero \textbf{Makefile} con los comandos necesarios para compilar e instalar el programa.
+\\
 
 Una vez el comando ha acabado ejecutamos
 
@@ -238,6 +242,7 @@ Con esto tendríamos instalado Nagios y sus plugins desde código fuente, ahora 
 
 \subsection{Configuración de Nagios}
 En esta sección se explica cómo configurar Nagios paso a paso.
+\\
 
 En primer lugar debemos crear los usuarios. En esta memoria crearemos un usuario administrador y otro que sólo pueda consultar la interfaz web.
 
@@ -247,6 +252,7 @@ htpasswd /usr/local/nagios/etc/htpasswd.users usuario
 \end{verbatim}
 
 En ambos casos se pedirá que se introduzca una contraseña, en nuestro ejemplo serán \textbf{labora2000} y \textbf{practicas} respectivamente. El parámetro -c usado en el primer comando crea el fichero si no existe, de existir lo sobreescribe.
+\\
 
 El siguiente paso es cambiar el e-mail de contacto. Este e-mail será el que recibirá todas las notificaciones de Nagios. Para ello editamos el fichero /usr/local/nagios/etc/objects/contacts.cfg y cambiamos la siguiente línea para que contenga nuestro e-mail
 
@@ -261,8 +267,10 @@ LoadModule php5_module modules/libphp5.so
 \end{verbatim}
 
 con esto nos aseguramos de que funcione PHP en nuestro servidor web.
+\\
 
 Por último configuramos los usuarios de Nagios. Para ello hay que editar el fichero /usr/local/nagios/etc/cgi.cfg
+\\
 
 Hay que editar las líneas siguientes para incluir los usuarios que hemos creado
 
@@ -289,12 +297,14 @@ Las líneas hacen lo siguiente:
 \end{itemize}
 
 De esta manera sólo le damos poderes totales al usuario \textbf{administrador} y poderes de consulta al usuario \textbf{usuario}.
+\\
 
 Con esto hemos acabado la configuración de Nagios, pero no es muy útil si no añadimos algunos hosts externos para monitorizar.
 
 \subsection{Configuración de los hosts externos}
 
 Para comenzar la configuración, crearemos el fichero /usr/local/nagios/etc/objects/hosts.cfg que contendrá todos los parámetros, hosts y servicios a configurar.
+\\
 
 La plantilla básica que vamos a usar para configurar cada uno de los hosts es la siguiente
 
@@ -327,6 +337,7 @@ define host {
 \end{itemize}
 
 Tendremos un bloque como el anterior \textbf{para cada uno} de los hosts que pretendemos monitorizar.
+\\
 
 El siguiente paso es el de configurar grupos, de manera que se pueda asignar la monitorización de un servicio al grupo entero en lugar de ir host por host. La plantilla es la siguiente
 
@@ -376,6 +387,7 @@ define service{
 \end{itemize}
 
 El ejemplo anterior monitoriza el estado del servicio SSH en el grupo grupolab1.
+\\
 
 Ahora queda decirle a Nagios que lea el fichero que acabamos de crear, para ello hay que editar el fichero /usr/local/nagios/etc/nagios.cfg y hay que añadir la línea
 
@@ -392,10 +404,20 @@ service nagios restart
 
 \section{Acceso a Nagios mediante el navegador}
 
-Se debe explicar cómo se debe configurar el servidor web para acceder a Nagios a través del navegador
-y  tambíen la interfaz web que presenta Nagios.
+Para acceder a la interfaz web de Nagios una vez seguidos los pasos anteriores, no hay más que ir a \url{http://localhost/nagios/}.
 
-\section{Experiencia de instalación y configuración de  Nagios}
+La página principal es la siguiente
+
+\begin{figure}[h!]
+  \centering
+\includegraphics[width=10cm]{images/0.png} 
+  \caption{Página principal.}
+\end{figure}
+
+Se debe explicar cómo se debe configurar el servidor web para acceder a Nagios a través del navegador
+y  también la interfaz web que presenta Nagios.
+
+\section{Experiencia de instalación y configuración de Nagios}
 
 Se deben detallar los pasos que se han seguido para la instalación y configuración de Nagios
 tanto para monitorizar el sistema local como sistemas remotos.
