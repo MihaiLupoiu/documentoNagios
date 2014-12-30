@@ -21,35 +21,38 @@
     Nagios es un sistema de monitorización de redes ampliamente utilizado, de código abierto, que vigila los equipos (hardware) y servicios (software) que se especifiquen, alertando cuando el comportamiento de los mismos no sea el deseado. Entre sus características principales figuran la monitorización de servicios de red (SMTP, POP3, HTTP, SNMP...), la monitorización de los recursos de sistemas hardware (carga del procesador, uso de los discos, memoria, estado de los puertos...), independencia de sistemas operativos, posibilidad de monitorización remota mediante túneles SSL cifrados o SSH, y la posibilidad de programar plugins específicos para nuevos sistemas\cite{nagios-wikipedia}.
     
 \begin{figure}[hbtp]
-\centerline{\includegraphics[width=9cm]{nagios3-1.png}}
+\centerline{\includegraphics[width=11cm]{nagios3-1.png}}
 \caption{Interfaz de Nagios}
-\label{figura1}
+\label{figura-Nagios}
 \end{figure}    
 
     Se trata de un software que proporciona una gran versatilidad para consultar prácticamente cualquier parámetro de interés de un sistema, y genera alertas, que pueden ser recibidas por los responsables correspondientes mediante (entre otros medios) correo electrónico y mensajes SMS, cuando estos parámetros exceden de los márgenes definidos por el administrador de red.
 
-    Nagios\cite{web} fue originalmente diseñado para ser ejecutado en GNU/Linux, pero también se ejecuta bien en variantes de Unix.
-
-    Nagios está licenciado bajo la GNU General Public License Version 2 publicada por la Free Software Fundation.
+    Nagios\cite{web} fue originalmente diseñado para ser ejecutado en GNU/Linux, pero también se ejecuta bien en variantes de Unix. Está licenciado bajo la GNU General Public License Version 2 publicada por la Free Software Fundation.
     
-    Algunas de las características que Nagios tiene son:
+\subsection{Descripción}
 \begin{itemize}
 
-\item Monitoréo de Servicios de Red
+\item Monitorización de Servicios de Red
+\item Monitorización de los recursos de equipos hardware (carga del procesador, uso de los discos, logs del sistema) en varios sistemas operativos, incluso Microsoft Windows con los plugins $NRPE_NT$ o $NSClient++$.
+\item Monitorización remota, a través de túneles SSL cifrados o SSH.
 \item Monitoreo de Host y sus recursos como CPU, Memoria, Discos, etc
-\item Desarrollo de Plugins para el chequeo de una infinidad de plataformas y servicios
-\item Capacidad de Services Checks en paralelo
-\item Capacidad de Definir Host/Servicios padres o hijos, lo que permite detectar el origen del problema en caso de no ser de la propia máquina (Ejemplo: la caída de un server por la falla de un Switch)
-\item Definición de Contactos para el envío de notificaciones
-\item Capacidad de definir manejadores de eventos para el manejo de eventos de manera proactiva
+\item Diseño simple de plugins, que permiten a los usuarios desarrollar sus propios chequeos de servicios dependiendo de sus necesidades, usando sus herramientas preferidas (Bash, C++, Perl, Ruby, Python, PHP, C\#...).
+\item Chequeo de servicios paralizados.
+\item Posibilidad de definir la jerarquía de la red, permitiendo distinguir entre host caídos y host inaccesibles.
+\item Capacidad de Definir Host/Servicios padres o hijos, lo que permite detectar el origen del problema en caso de no ser de la propia máquina 
+\item Notificaciones a los contactos cuando ocurren problemas en servicios o hosts, así como cuando son resueltos (a través del correo electrónico, buscapersonas, Jabber, SMS, o cualquier método definido por el usuario junto con su correspondiente complemento).
+\item Posibilidad de definir manejadores de eventos que ejecuten al ocurrir un evento de un servicio o host para resoluciones de problemas proactivas.
 \item Log de eventos
 \item Interface Web para la visualización de estados de servicio, históricos, Archivo de Log, etc
 \item Integración con herramientas que la comunidad ha desarrollado
 \item Multiplataforma, aunque fue desarrollado originalmente para correr sobre Linux
+\item Visualización del estado de la red en tiempo real a través de interfaz web, con la posibilidad de generar informes y gráficas de comportamiento de los sistemas monitorizados, y visualización del listado de notificaciones enviadas, historial de problemas, archivos de registros....
 
 \end{itemize}
 
-Que es lo que se gana con Nagios.
+\subsection{Beneficios de utilizar Nagios}
+
 \begin{itemize}
 \item Supervisión Continua de la plataforma de TI
 \item Esto te permite mejorar los tiempos de disponibilidad de los servicios
@@ -57,24 +60,48 @@ Que es lo que se gana con Nagios.
 \item Reaccionar de manera preventiva y no reactiva ante los eventos que nagios detecte.
 \item Aumenta la productividad de las TIC
 \item Generar Reportes de los eventos.
-\item Planificar mantencion de tu hardware o servicios.
+\item Planificar mantención de tu hardware o servicios.
 \item Planificar el cambio o renovación de la Infraestructura de TIC
 \end{itemize}    
 
-    Además de Nagios existen otras alternativas como por ejemplo: 
 
+\subsection{Alternativas a Nagios}
+
+    Algunas de las alternativas existentes a Nagios son:
+
+\begin{itemize}
+
+\item Pandora FMS\cite{web-PandoraFMS} es un software de código abierto que sirve para monitorizar y medir todo tipo de elementos. Monitoriza sistemas, aplicaciones o dispositivos. Permite saber el estado de cada elemento de un sistema a lo largo del tiempo. Pandora FMS está orientado a grandes entornos, y permite gestionar con y sin agentes, varios miles de sistemas, por lo que se puede emplear en grandes clusters, centros de datos y redes de todo tipo.
+
+\begin{figure}[hbtp]
+\centerline{\includegraphics[width=10 cm]{pandoraFMS.png}}
+\caption{Interfaz Pandora FMS}
+\label{PandoraFMS}
+\end{figure}
+
+
+\item Zenoss (Zenoss Core)\cite{web-Zenoss} es una aplicación de informática de código abierto, plataforma para la gestión de red y servidores basada en el servidor de aplicaciones Zope. Zenoss Core provee una interfaz web que permite a los administradores de sistemas monitorear disponibilidad, inventario/configuración, desempeño y eventos.
+
+\begin{figure}[hbtp]
+\centerline{\includegraphics[width=10cm]{Zenossscreen.jpg}}
+\caption{Interfaz Zenoss}
+\label{Zenoss}
+\end{figure}
+
+\end{itemize}
+    
     
 \section{Funcionamiento de Nagios}
 
-Explicación de cómo funciona Nagios
+%%Explicación de cómo funciona Nagios
 
-Se pueden incluir figuras como por ejemplo la Figura~\ref{figura1} de la página \pageref{figura1}
+%%Se pueden incluir figuras como por ejemplo la Figura~\ref{figura1} de la página \pageref{figura1}
 
-\begin{figure}
-\centerline{\includegraphics[width=6cm]{nagios3-1.png}}
-\caption{Figura de ejemplo}
-\label{figura1}
-\end{figure}
+%%\begin{figure}
+%%\centerline{\includegraphics[width=6cm]{nagios3-1.png}}
+%%\caption{Figura de ejemplo}
+%%\label{figura1}
+%%\end{figure}
 
 \section{Instalación de Nagios}
 
@@ -194,10 +221,8 @@ tanto para monitorizar el sistema local como sistemas remotos.
 
 \bibitem{web} Página web del proyecto de Nagios: \url{http://www.nagios.org}
 \bibitem{nagios-wikipedia} Wikipedia Nagios: \url{http://es.wikipedia.org/wiki/Nagios}
-\bibitem{nagios-wikipedia} Página web del proyecto de OpenNMS: \url{http://www.opennms.org/wiki/Main_Page}
-\bibitem{nagios-wikipedia} Página web del proyecto de Pandorafms: \url{http://pandorafms.com/}
-\bibitem{nagios-wikipedia} Página web del proyecto de NeDi: \url{http://www.nedi.ch/}
-
+\bibitem{web-PandoraFMS} Página web del proyecto de PandoraFMS: \url{http://pandorafms.com/}
+\bibitem{web-Zenoss} Página web del proyecto de Zenoss: \url{http://www.zenoss.com/}
 \end{thebibliography}
 
 \end{document}
